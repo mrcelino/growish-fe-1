@@ -11,19 +11,20 @@ interface Material {
   calories: number;
   protein: number;
   material_category: string;
+  categories: string[];
 }
 
 interface MaterialStats {
   totalMaterials: number;
   newMaterials: number;
-  totalMaterialCategories: number;
+  totalMaterialCategory: number;
 }
 
 export default function Home() {
   const { user } = useAuth();
   const [materials, setMaterials] = useState<Material[]>([]);
   const [stats, setStats] = useState<MaterialStats>({
-    totalMaterials: 0, newMaterials: 0, totalMaterialCategories: 0,
+    totalMaterials: 0, newMaterials: 0, totalMaterialCategory: 0,
   });
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function Home() {
         <div className="grid grid-cols-3 gap-10 mt-4">
           <StatCard title="Total Bahan Pangan" value={stats.totalMaterials} />
           <StatCard title="Bahan Terbaru (7 Hari)" value={stats.newMaterials} />
-          <StatCard title="Kategori Bahan" value={stats.totalMaterialCategories} />
+          <StatCard title="Kategori Bahan" value={stats.totalMaterialCategory} />
         </div>
         <Menu materials={materials} />
       </div>
@@ -87,33 +88,62 @@ function StatCard({ title, value }: { title: string; value: number }) {
 
 function Menu({ materials }: { materials: Material[] }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
   const [filteredMaterials, setFilteredMaterials] = useState<Material[]>(materials);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Mapping dari kategori Inggris ke Indonesia
+  const categoryMap: { [key: string]: string } = {
+    heart: "Jantung",
+    diabetes: "Diabetes",
+    muscle: "Otot",
+    diet: "Diet",
+  };
+
+  // Daftar kategori Indonesia yang akan ditampilkan
+  const categoryOptions = ["Semua", "Diet", "Otot", "Jantung", "Diabetes"];
+
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      const filtered = materials.filter((m) =>
-        m.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const filtered = materials.filter((m) => {
+        const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesCategory =
+          selectedCategory === "Semua" ||
+          m.categories?.some((c) => {
+            const translated = categoryMap[c.toLowerCase()];
+            return translated?.toLowerCase() === selectedCategory.toLowerCase();
+          });
+
+        return matchesSearch && matchesCategory;
+      });
+
       setFilteredMaterials(filtered);
     }, 300);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchTerm, materials]);
+  }, [searchTerm, selectedCategory, materials]);
 
   return (
     <div className="flex flex-col mt-10">
       <h2 className="text-2xl font-semibold text-black">Riwayat Bahan Pangan</h2>
+
+      {/* Filter Kategori */}
       <div className="flex mt-6 space-x-5">
-        {["Semua", "Diet", "Otot", "Jantung", "Diabetes"].map((category) => (
-          <div
+        {categoryOptions.map((category) => (
+          <button
             key={category}
-            className="border-[3px] border-[#80C978] rounded-2xl py-2 px-5 text-xl font-semibold flex items-center justify-center bg-white shadow-md"
+            onClick={() => setSelectedCategory(category)}
+            className={`border-[3px] border-[#80C978] rounded-2xl py-2 px-5 text-xl font-semibold flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition duration-300 ${
+              selectedCategory === category ? "bg-[#80C978] text-white" : "bg-white"
+            }`}
           >
             {category}
-          </div>
+          </button>
         ))}
       </div>
+
+      {/* Input Pencarian */}
       <div className="flex gap-5 mt-8">
         <div className="flex bg-white items-center space-x-4 border-[#BFBFBF] border-2 py-4 px-4 font-medium text-lg rounded-2xl w-3/4">
           <Image src="/search.png" alt="search" width={30} height={30} className="size-6" />
@@ -133,6 +163,8 @@ function Menu({ materials }: { materials: Material[] }) {
           + Tambah Bahan Pangan
         </Link>
       </div>
+
+      {/* Daftar Bahan */}
       <div className="grid grid-cols-5 gap-10 mt-6">
         {filteredMaterials.length > 0 ? (
           filteredMaterials.map((m) => <Card key={m.id} material={m} />)
