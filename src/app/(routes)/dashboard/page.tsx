@@ -71,7 +71,7 @@ export default function Home() {
         <h2 className="text-xl font-semibold text-black">
           Selamat datang, {user?.name || "Pengguna"}!
         </h2>
-        <div className="grid grid-cols-3 gap-10 mt-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10 md:mt-2">
           <StatCard title="Total Bahan Pangan" value={stats.totalMaterials} />
           <StatCard title="Bahan saya" value={stats.myMaterials} />
           <StatCard title="Kategori Bahan" value={stats.totalMaterialCategory} />
@@ -84,9 +84,9 @@ export default function Home() {
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
-    <div className="flex flex-col items-center justify-center bg-[#A9DBA4] rounded-2xl p-5 mt-6 min-h-40 shadow-md gap-2">
-      <h2 className="text-2xl font-bold">{value}</h2>
-      <h2 className="text-xl font-semibold text-center">{title}</h2>
+    <div className="flex flex-col items-center justify-center bg-[#A9DBA4] rounded-2xl p-5 mt-6 min-h-20 w-full max-w-sm md:max-w-lg mx-auto md:mx-0 md:min-h-40 shadow-md gap-2">
+      <h2 className="text-lg md:text-2xl font-bold">{value}</h2>
+      <h2 className="text-base md:text-xl font-semibold text-center">{title}</h2>
     </div>
   );
 }
@@ -133,12 +133,12 @@ function Menu({ materials }: { materials: Material[] }) {
       <h2 className="text-xl font-semibold text-black">Riwayat Bahan Pangan</h2>
 
       {/* Filter Kategori */}
-      <div className="flex mt-6 space-x-5">
+      <div className="flex flex-col md:flex-row mt-6 space-y-4 md:space-y-0 md:space-x-5 md:gap-4">
         {categoryOptions.map((category) => (
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            className={`border-[3px] border-[#80C978] rounded-xl py-1 px-4 font-semibold flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition duration-300 ${
+            className={`border-[3px] border-[#80C978] rounded-xl max-w-sm  w-full xl:w-24 mx-auto md:mx-0 h-fit py-1 px-4 font-semibold flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition duration-300 ${
               selectedCategory === category ? "bg-[#80C978] text-white" : "bg-white"
             }`}
           >
@@ -148,8 +148,8 @@ function Menu({ materials }: { materials: Material[] }) {
       </div>
 
       {/* Input Pencarian */}
-      <div className="flex gap-5 mt-6">
-        <div className="flex bg-white items-center space-x-4 border-[#BFBFBF] border-2 p-2 font-medium rounded-2xl w-3/4">
+      <div className="flex flex-col md:flex-row gap-5 mt-6">
+        <div className="flex bg-white items-center space-x-4 border-[#BFBFBF] border-2 p-2 font-medium rounded-2xl max-w-sm mx-auto md:max-w-full w-full md:w-3/4 order-2 md:order-1">
           <Image src="/search.png" alt="search" width={30} height={30} className="size-5" />
           <input
             ref={inputRef}
@@ -162,14 +162,14 @@ function Menu({ materials }: { materials: Material[] }) {
         </div>
         <Link
           href="/dashboard/tambah"
-          className="flex items-center justify-center bg-[#80C978] rounded-2xl py-3 px-4 font-semibold w-1/4"
+          className="flex items-center justify-center bg-[#80C978] rounded-2xl py-3 px-4 font-semibold max-w-sm mx-auto w-full md:w-1/4 order-1"
         >
           + Tambah Bahan Pangan
         </Link>
       </div>
 
       {/* Daftar Bahan */}
-      <div className="grid grid-cols-5 gap-6 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6">
         {filteredMaterials.length > 0 ? (
           filteredMaterials.map((m) => (
             <Card key={m.id} material={m}/>
@@ -226,7 +226,7 @@ function Card({ material }: { material: Material }) {
   const [value1, value2] = selectedFields.map((field) => material[field as keyof Material] as number);
 
   return (
-    <div className="flex flex-col gap-1 bg-white h-fit rounded-2xl shadow-md border-2 border-gray-100 p-4">
+    <div className="flex flex-col gap-1 bg-white h-fit rounded-2xl shadow-md border-2 border-gray-100 p-4 w-full max-w-xs mx-auto md:mx-0">
       <Image
         src={material.imageUrl || "/placeholder.png"}
         alt={material.name}
