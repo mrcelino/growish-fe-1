@@ -253,43 +253,55 @@ const formDataEntries: Record<string, any> = {};
   return (
     <DashboardLayout>
       <div className="">
-        <h2 className="text-xl font-semibold text-black">Tambah Bahan Pangan</h2>
+        <h2 className="text-xl font-semibold text-black">
+          Tambah Bahan Pangan
+        </h2>
         <div className="bg-[#CCE9C8] mt-6 rounded-2xl p-6">
           <h2 className="text-lg font-semibold">Data Utama</h2>
-          <div className="grid grid-cols-2 gap-4 mt-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
             <div className="flex flex-col gap-2">
-              <label className="font-medium">Nama Bahan</label>
+              <label className="text-sm md:text-base font-medium">
+                Nama Bahan
+              </label>
               <input
                 name="name"
                 value={form.name}
                 onChange={handleInputChange}
                 placeholder="Nama Bahan"
-                className="w-full p-3 rounded-lg bg-white"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label className="font-medium">Tanggal Pengujian</label>
+              <label className="text-sm md:text-base font-medium">
+                Tanggal Pengujian
+              </label>
               <input
                 name="testDate"
                 type="date"
                 value={form.testDate}
                 onChange={handleInputChange}
-                className="w-full p-3 rounded-lg bg-white"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base cursor-pointer"
               />
             </div>
             <div className="flex flex-col gap-2 relative">
-              <label className="font-medium">Kategori Bahan</label>
+              <label className="text-sm md:text-base font-medium">
+                Kategori Bahan
+              </label>
               <div
-                className="bg-white p-3 rounded-lg cursor-pointer border border-gray-300 flex justify-between text-sm"
+                className="bg-white p-3 rounded-lg cursor-pointer border border-gray-300 flex justify-between"
                 onClick={() => setKategoriOpen(!kategoriOpen)}
               >
-                <span>{form.kategoriValue || "Pilih Kategori"}</span>
+                <span className="text-xs md:text-base font-medium">
+                  {form.kategoriValue || "Pilih Kategori"}
+                </span>
                 <Image
                   src="/dropdown.svg"
                   alt="dropdown"
                   width={15}
                   height={15}
-                  className={`transition-transform ${kategoriOpen ? "rotate-180" : ""}`}
+                  className={`transition-transform ${
+                    kategoriOpen ? "rotate-180" : ""
+                  }`}
                 />
               </div>
               {kategoriOpen && (
@@ -307,22 +319,22 @@ const formDataEntries: Record<string, any> = {};
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <label className="font-medium">Sumber / Asal</label>
+              <label className="text-sm md:text-base font-medium">Sumber / Asal</label>
               <input
                 name="source"
                 value={form.source}
                 onChange={handleInputChange}
                 placeholder="Sumber / Asal"
-                className="w-full p-3 rounded-lg bg-white text-sm"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base"
               />
             </div>
           </div>
 
           <h2 className="text-lg font-semibold mt-6">Kandungan Nutrisi</h2>
-          <div className="grid grid-cols-7 gap-4 mt-3">
+          <div className="grid grid-cols-2 lg:grid-cols-7 gap-4 mt-3">
             {nutrisiFields.map(({ label, name }) => (
               <div key={name} className="flex flex-col gap-2">
-                <label className="font-medium">{label}</label>
+                <label className="text-sm md:text-base font-medium">{label}</label>
                 <input
                   name={name}
                   type="number"
@@ -347,8 +359,8 @@ const formDataEntries: Record<string, any> = {};
             />
           </div>
 
-          <div className="flex gap-4 mt-8 justify-between">
-            <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4 mt-8 justify-between">
+            <div className="flex gap-4 mx-auto md:mx-0">
               <button
                 type="button"
                 className="bg-[#DC3545] text-white rounded-lg py-2 px-4"
@@ -366,7 +378,7 @@ const formDataEntries: Record<string, any> = {};
             </div>
             <button
               type="submit"
-              className="bg-[#007BFF] text-white font-semibold rounded-lg py-2 px-4"
+              className="bg-[#007BFF] text-white font-semibold rounded-lg py-2 px-4 max-w-sm mx-auto md:mx-0"
               onClick={handleSubmit}
             >
               Lanjutkan
@@ -384,7 +396,7 @@ const formDataEntries: Record<string, any> = {};
           >
             <p className="text-xl font-medium">{popup.message}</p>
             <button
-                className="bg-[#007BFF] text-white font-medium text-lg rounded-lg py-2 px-4"
+              className="bg-[#007BFF] text-white font-medium text-lg rounded-lg py-2 px-4"
               onClick={handlePopupClose}
             >
               Tutup
@@ -397,7 +409,9 @@ const formDataEntries: Record<string, any> = {};
         <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
           <div className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-6 w-full max-w-1/3">
             <h2 className="font-semibold mb-4">Unggah Gambar</h2>
-            <p className="mb-4 text-center">Pilih gambar untuk bahan pangan (maks 5MB)</p>
+            <p className="mb-4 text-center">
+              Pilih gambar untuk bahan pangan (maks 5MB)
+            </p>
             <div
               onClick={() => fileInputRef.current?.click()}
               className="mb-4 w-full flex items-center justify-center bg-gray-100 border-2 border-dashed border-gray-300 rounded-2xl min-h-80"
@@ -409,7 +423,9 @@ const formDataEntries: Record<string, any> = {};
                   className="w-full h-full object-cover rounded-2xl"
                 />
               ) : (
-                <span className="text-gray-500 text-center">Belum ada gambar dipilih</span>
+                <span className="text-gray-500 text-center">
+                  Belum ada gambar dipilih
+                </span>
               )}
             </div>
             <input
@@ -434,7 +450,9 @@ const formDataEntries: Record<string, any> = {};
               <button
                 onClick={handleSave}
                 disabled={isLoading}
-                className={`w-1/2 px-4 py-2 bg-[#007BFF] hover:bg-blue-600 transition duration-300 text-white font-medium rounded-lg cursor-pointer ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`w-1/2 px-4 py-2 bg-[#007BFF] hover:bg-blue-600 transition duration-300 text-white font-medium rounded-lg cursor-pointer ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 {isLoading ? "Menyimpan..." : "Simpan"}
               </button>

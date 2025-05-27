@@ -127,20 +127,20 @@ export default function Details() {
           Detail Bahan Pangan
         </h2>
 
-        <div className="bg-[#CCE9C8] mt-6 rounded-2xl p-6 h-fit">
+        <div className="bg-[#CCE9C8] mt-6 rounded-2xl p-4 md:p-6 h-fit">
           {!material ? (
             <div className="text-center text-gray-700 font-medium">
               Memuat data...
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="flex flex-col gap-6">
                 {/* Informasi Utama */}
                 <div className="bg-[#A9DBA4] rounded-2xl p-4">
                   <h2 className="text-lg font-semibold mb-4">
                     Informasi Utama
                   </h2>
-                  <div className="grid grid-cols-[auto_min-content_1fr] gap-4 font-medium">
+                  <div className="grid grid-cols-[auto_min-content_1fr] gap-4 font-medium text-sm md:text-base">
                     <div>Nama Bahan</div>
                     <div>:</div>
                     <div>{material.name}</div>
@@ -177,7 +177,7 @@ export default function Details() {
                       alt={material.name}
                       width={200}
                       height={200}
-                      className="w-3/4 object-cover h-[400px] rounded-2xl "
+                      className="w-3/4 object-cover md:h-[400px] rounded-2xl "
                       unoptimized
                     />
                   </div>
@@ -189,9 +189,9 @@ export default function Details() {
                   <h2 className="text-lg font-semibold mb-4">
                     Distribusi Utama
                   </h2>
-                  <div className="grid grid-cols-3 gap-4 text-lg font-medium">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 font-medium">
                     {chartData.map((item, index) => (
-                      <div key={item.label} className="flex items-center gap-2 text-base">
+                      <div key={item.label} className="flex items-center gap-2 text-sm md:text-base">
                         <div
                           className="size-4 border rounded-md"
                           style={{
@@ -210,7 +210,7 @@ export default function Details() {
                   <h2 className="self-start text-lg font-semibold">
                     Visualisasi Distribusi
                   </h2>
-                  <div className="w-[400px]">
+                  <div className="h-fit md:w-[400px]">
                     {chartData.length ? (
                       <canvas ref={canvasRef} className="w-full h-full" />
                     ) : (

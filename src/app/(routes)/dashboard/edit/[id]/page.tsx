@@ -209,30 +209,30 @@ export default function Edit() {
         <h2 className="text-xl font-semibold text-black">Edit Bahan Pangan</h2>
         <div className="bg-[#CCE9C8] mt-6 rounded-2xl p-6">
           <h2 className="text-lg font-semibold">Data Utama</h2>
-          <div className="grid grid-cols-2 gap-4 mt-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
             <div className="flex flex-col gap-2">
-              <label className="font-medium">Nama Bahan</label>
+              <label className="text-sm md:text-base font-medium">Nama Bahan</label>
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Nama Bahan"
-                className="w-full p-3 rounded-lg bg-white text-sm"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label className="font-medium">Tanggal Pengujian</label>
+              <label className="text-sm md:text-base font-medium">Tanggal Pengujian</label>
               <input
                 type="date"
                 name="testDate"
                 value={form.testDate}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-white text-sm"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base"
               />
             </div>
             <div className="flex flex-col gap-2 relative">
-              <label className="font-medium">Kategori Bahan</label>
+              <label className="text-sm md:text-base font-medium">Kategori Bahan</label>
               <input
                 type="text"
                 name="materialCategory"
@@ -240,7 +240,7 @@ export default function Edit() {
                 readOnly
                 onClick={() => setKategoriOpen(!kategoriOpen)}
                 placeholder="Kategori Bahan"
-                className="w-full p-3 rounded-lg bg-white cursor-pointer text-sm"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base cursor-pointer"
               />
               {kategoriOpen && (
                 <div className="absolute top-full mt-1 bg-white w-full rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
@@ -257,20 +257,20 @@ export default function Edit() {
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <label className="font-medium">Sumber / Asal</label>
+              <label className="text-sm md:text-base font-medium">Sumber / Asal</label>
               <input
                 type="text"
                 name="source"
                 value={form.source}
                 onChange={handleChange}
                 placeholder="Sumber / Asal"
-                className="w-full p-3 rounded-lg bg-white text-sm"
+                className="w-full p-3 rounded-lg bg-white text-xs md:text-base"
               />
             </div>
           </div>
 
           <h2 className="text-lg font-semibold mt-6">Kandungan Nutrisi</h2>
-          <div className="grid grid-cols-7 gap-4 mt-3">
+          <div className="grid grid-cols-2 lg:grid-cols-7 gap-4 mt-3">
             {[
               ["calories", "Kalori"],
               ["protein", "Protein"],
@@ -288,7 +288,7 @@ export default function Edit() {
               ["natrium", "Natrium"],
             ].map(([name, label]) => (
               <div key={name} className="flex flex-col gap-2">
-                <label className="font-medium">{label}</label>
+                <label className="text-sm md:text-base font-medium">{label}</label>
                 <input
                   type="number"
                   step="any"
