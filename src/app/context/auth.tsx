@@ -31,7 +31,6 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include",
       });
     } catch (e) {
       console.error("Logout API failed", e);

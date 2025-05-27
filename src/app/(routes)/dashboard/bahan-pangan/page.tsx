@@ -1,9 +1,10 @@
 'use client';
+
 import { useState, useEffect, useRef } from "react";
 import DashboardLayout from "@/app/layout/DashboardLayout";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from '@/app/context/auth';
+import { useAuth } from "@/app/context/auth";
 
 interface Material {
   id: string;
@@ -16,78 +17,40 @@ interface Material {
   categories: string[];
 }
 
-interface MaterialStats {
-  totalMaterials: number;
-  myMaterials: number;
-  newMaterials: number;
-  totalMaterialCategory: number;
-}
-
-export default function Home() {
+export default function Page() {
   const { user } = useAuth();
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [stats, setStats] = useState<MaterialStats>({
-    totalMaterials: 0,
-    newMaterials: 0,
-    totalMaterialCategory: 0,
-    myMaterials: 0,
-  });
 
   useEffect(() => {
-    if (!user?.token) return;
+    if (!user?.id) return;
 
-    const fetchData = async () => {
+    const fetchMaterials = async () => {
       try {
-        const [materialsRes, statsRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials?`, {
-            headers: { Authorization: `Bearer ${user.token}` },
-          }),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/stats`, {
-            headers: { Authorization: `Bearer ${user.token}` },
-          }),
-        ]);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials?limit=15`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        const materialsData = await response.json();
 
-        const [materialsData, statsData] = await Promise.all([
-          materialsRes.json(),
-          statsRes.json(),
-        ]);
-
-        if (materialsRes.ok) setMaterials(materialsData.data);
-        else console.error("Gagal fetch materials:", materialsData.message);
-
-        if (statsRes.ok) setStats(statsData.data);
-        else console.error("Gagal fetch stats:", statsData.message);
-      } catch (err) {
-        console.error("Error fetching data:", err);
+        if (response.ok) {
+          setMaterials(materialsData.data);
+        } else {
+          console.error("Failed to fetch materials:", materialsData.message);
+        }
+      } catch (error) {
+        console.error("Error fetching materials:", error);
       }
     };
 
-    fetchData();
+    fetchMaterials();
   }, [user]);
 
   return (
     <DashboardLayout>
       <div className="flex flex-col">
-        <h2 className="text-xl font-semibold text-black">
-          Selamat datang, {user?.name || "Pengguna"}!
-        </h2>
-        <div className="grid grid-cols-3 gap-10 mt-2">
-          <StatCard title="Total Bahan Pangan" value={stats.totalMaterials} />
-          <StatCard title="Bahan saya" value={stats.myMaterials} />
-          <StatCard title="Kategori Bahan" value={stats.totalMaterialCategory} />
-        </div>
+        <h2 className="text-xl font-semibold text-black">Bahan Pangan Saya</h2>
         <Menu materials={materials} />
       </div>
     </DashboardLayout>
-  );
-}
-
-function StatCard({ title, value }: { title: string; value: number }) {
-  return (
-    <div className="flex flex-col items-center justify-center bg-[#A9DBA4] rounded-2xl p-5 mt-6 min-h-40 shadow-md gap-2">
-      <h2 className="text-2xl font-bold">{value}</h2>
-      <h2 className="text-xl font-semibold text-center">{title}</h2>
-    </div>
   );
 }
 
@@ -96,6 +59,8 @@ function Menu({ materials }: { materials: Material[] }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
   const [filteredMaterials, setFilteredMaterials] = useState<Material[]>(materials);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedMaterialId, setSelectedMaterialId] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const categoryMap: { [key: string]: string } = {
@@ -110,7 +75,7 @@ function Menu({ materials }: { materials: Material[] }) {
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       const filtered = materials.filter((m) => {
-        const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase().trim());
 
         const matchesCategory =
           selectedCategory === "Semua" ||
@@ -128,10 +93,39 @@ function Menu({ materials }: { materials: Material[] }) {
     return () => clearTimeout(delayDebounce);
   }, [searchTerm, selectedCategory, materials]);
 
-  return (
-    <div className="flex flex-col mt-8">
-      <h2 className="text-xl font-semibold text-black">Riwayat Bahan Pangan</h2>
+  const handleDeleteMaterial = async () => {
+    if (!selectedMaterialId) return;
 
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${selectedMaterialId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+
+      if (res.ok) {
+        setFilteredMaterials((prev) => prev.filter((m) => m.id !== selectedMaterialId));
+        setShowDeleteModal(false);
+        setSelectedMaterialId(null);
+      } else {
+        const errorData = await res.json();
+        console.error("Gagal menghapus:", errorData.message);
+        alert("Gagal menghapus bahan.");
+      }
+    } catch (error) {
+      console.error("Error saat menghapus:", error);
+      alert("Terjadi kesalahan saat menghapus.");
+    }
+  };
+
+  const openDeleteModal = (id: string) => {
+    setSelectedMaterialId(id);
+    setShowDeleteModal(true);
+  };
+
+  return (
+    <div className="flex flex-col">
       {/* Filter Kategori */}
       <div className="flex mt-6 space-x-5">
         {categoryOptions.map((category) => (
@@ -172,17 +166,41 @@ function Menu({ materials }: { materials: Material[] }) {
       <div className="grid grid-cols-5 gap-6 mt-6">
         {filteredMaterials.length > 0 ? (
           filteredMaterials.map((m) => (
-            <Card key={m.id} material={m}/>
+            <Card key={m.id} material={m} onDelete={openDeleteModal} />
           ))
         ) : (
           <p className="col-span-5 text-center text-gray-500">Tidak ditemukan bahan pangan.</p>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && selectedMaterialId && (
+        <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
+          <div className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-6 w-full max-w-1/3">
+            <h2 className="text-lg font-semibold mb-6">Hapus Bahan Pangan?</h2>
+            <p className="mb-5">Apakah Anda yakin ingin menghapus bahan ini?</p>
+            <div className="flex w-full space-x-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="w-1/2 px-4 py-2 border border-gray-300 rounded-lg cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleDeleteMaterial}
+                className="w-1/2 px-4 py-2 bg-red-600 hover:bg-red-500 transition duration-300 text-white font-medium rounded-lg cursor-pointer"
+              >
+                Konfirmasi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function Card({ material }: { material: Material }) {
+function Card({ material, onDelete }: { material: Material; onDelete: (id: string) => void }) {
   const categoryMap: { [key: string]: string } = {
     heart: "Jantung",
     muscle: "Otot",
@@ -240,9 +258,21 @@ function Card({ material }: { material: Material }) {
         {selectedLabels[0]}: {value1} {selectedLabels[0] === "Kalori" ? "kcal" : selectedLabels[0] === "Protein" ? "g" : selectedLabels[0] === "Gula" ? "g" : "g"} |{" "}
         {selectedLabels[1]}: {value2} {selectedLabels[1] === "Kalori" ? "kcal" : selectedLabels[1] === "Protein" ? "g" : selectedLabels[1] === "Gula" ? "g" : "g"}
       </h2>
-      <div className="flex justify-end mt-2">
+      <div className="flex space-x-4 justify-end mt-2">
+        <Link
+          href={`/dashboard/edit/${material.id}`}
+          className="flex items-center justify-center bg-[#E2A713] size-7 rounded-md"
+        >
+          <Image src="/edit.svg" alt="edit icon" width={20} height={20} className="w-4 object-cover" />
+        </Link>
+        <button
+          onClick={() => onDelete(material.id)}
+          className="flex items-center justify-center bg-[#DC3545] size-7 rounded-md"
+        >
+          <Image src="/delete.svg" alt="delete icon" width={15} height={15} className="w-4" />
+        </button>
         <Link href={`/dashboard/details/${material.id}`} className="flex items-center justify-center bg-[#007BFF] size-7 rounded-md">
-          <Image src="/view.png" alt="view icon" width={8} height={8} className="w-5" />
+          <Image src="/view.png" alt="view icon" width={20} height={10} className="w-5" />
         </Link>
       </div>
     </div>
