@@ -26,7 +26,7 @@ export default function Page() {
 
     const fetchMaterials = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials?limit=15`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/my-materials`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const materialsData = await response.json();
