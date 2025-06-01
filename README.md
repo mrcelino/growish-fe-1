@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Growish - Labora
 
-## Getting Started
+<p align="center">
+  <a href="https://growish-fe-1.vercel.app/" target="_blank">
+    <img src="https://www.upload.ee/image/18163354/Logo.png" width="300" alt="Growish Logo" />
+  </a>
+</p>
 
-First, run the development server:
+## 📘 Deskripsi Proyek
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Growish adalah aplikasi web yang terdiri dari dua sistem utama:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Labora** – Sistem Manajemen Bahan Pangan untuk **Peneliti Pangan (Researcher)**
+- **LabGizi** – Sistem Manajemen Resep Makanan untuk **Ahli Gizi (Nutritionist)**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Aplikasi frontend ini dibangun menggunakan **Next.js**, dan berfungsi sebagai antarmuka pengguna untuk mengakses dan mengelola data melalui backend Growish API. Sistem menggunakan **autentikasi berbasis JWT** dan menyesuaikan tampilan serta fitur berdasarkan **peran pengguna**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🔧 Sistem dan Fitur
 
-To learn more about Next.js, take a look at the following resources:
+### 🧪 Labora – Sistem Manajemen Bahan Pangan (Untuk Peneliti Pangan)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Peneliti Pangan dapat mengelola data bahan pangan yang akan digunakan dalam perumusan resep. Fitur-fitur utama:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 📦 Manajemen Bahan Pangan
+- Tambah, edit, dan hapus bahan pangan
+- Lihat detail kandungan nutrisi per bahan
+- Upload dan ubah gambar bahan
 
-## Deploy on Vercel
+#### 📊 Statistik dan Ringkasan
+- Statistik bahan pangan dan kategori
+- Statistik bahan pangan terbaru dalam 7 hari
+- Statistik bahan pangan yang ditambahkan oleh pengguna saat ini
+- Visualisasi distribusi kandungan utama dari setiap bahan pangan dalam bentuk diagram
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🥗 LabGizi – Sistem Manajemen Resep Makanan (Untuk Ahli Gizi)
+
+Ahli Gizi dapat menyusun resep makanan dari bahan pangan yang sudah tersedia. Fitur-fitur utama:
+
+#### 📋 Manajemen Resep
+- Buat resep dengan kombinasi bahan pangan
+- Atur takaran dan jumlah bahan dalam resep
+- Edit dan hapus resep
+
+#### ⚖️ Kalkulasi Gizi Otomatis & Preview Resep
+- Hitung total nilai gizi dari kombinasi bahan secara otomatis
+- Lihat komposisi resep yang telah dibuat
+- Lihat detail bahan pangan yang telah ditambahkan oleh peneliti pangan
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
