@@ -62,8 +62,17 @@ Ahli Gizi dapat menyusun resep makanan dari bahan pangan yang sudah tersedia. Fi
 
 ### Backend (Growish API)
 - [Express.js](https://expressjs.com/) – Web framework minimalis untuk Node.js
-- [Supabase](https://supabase.com/) – Layanan backend sebagai pengganti Firebase (digunakan sebagai API layer)
-- [PostgreSQL](https://www.postgresql.org/) – Database relasional yang digunakan di Supabase
+- [Supabase](https://supabase.com/) – Backend-as-a-Service yang menyediakan database dan autentikasi (digunakan sebagai API layer)
+- [PostgreSQL](https://www.postgresql.org/) – Database relasional yang digunakan oleh Supabase
+
+---
+
+## 📺 Media & Preview UI
+
+<div align="center">
+    <img src="https://www.upload.ee/image/18163710/WhatsApp_Image_2025-05-26_at_10.36.34_e4ee5e14.jpg" width="300" alt="Poster Growish" /><br><br>
+    <img src="https://www.upload.ee/image/18163715/Screenshot_2025-06-01_172738.png" width="650" alt="Preview UI" />
+</div>
 
 ---
 
