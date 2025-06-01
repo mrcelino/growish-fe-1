@@ -52,5 +52,43 @@ Ahli Gizi dapat menyusun resep makanan dari bahan pangan yang sudah tersedia. Fi
 
 ---
 
+## 🛠️ Teknologi yang Digunakan
+
+### Frontend
+- [Next.js](https://nextjs.org/) – Framework React modern untuk aplikasi web SSR/SSG
+- [TypeScript](https://www.typescriptlang.org/) – Superset JavaScript yang memberikan static typing
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework untuk styling cepat dan konsisten
+- [JWT](https://jwt.io/) – JSON Web Token untuk manajemen autentikasi pengguna
+
+### Backend (Growish API)
+- [Express.js](https://expressjs.com/) – Web framework minimalis untuk Node.js
+- [Supabase](https://supabase.com/) – Layanan backend sebagai pengganti Firebase (digunakan sebagai API layer)
+- [PostgreSQL](https://www.postgresql.org/) – Database relasional yang digunakan di Supabase
+
+---
+
+## ⚙️ Instalasi
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/mrcelino/growish-fe-1
+cd growish-fe-1
+```
+### 2. Instal Dependensi
+```bash
+npm install
+```
+### 3. Konfigurasi Environment Variables
+Buat file .env di root proyek:
+```ini
+NEXT_PUBLIC_API_URL=your-api-url
+```
+### 4. Jalankan Server
+```bash
+npm run dev
+```
+
+---
+
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
